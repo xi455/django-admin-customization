@@ -7,6 +7,9 @@ class Venue(models.Model):
     address = models.CharField(max_length=256, unique=True)
     capacity = models.PositiveIntegerField()
 
+    class Meta:
+        verbose_name_plural = "場地"
+
     def __str__(self):
         return f"{self.name}"
 
@@ -16,8 +19,8 @@ class ConcertCategory(models.Model):
     description = models.TextField(max_length=256, blank=True, null=True)
 
     class Meta:
-        verbose_name = "concert category"
-        verbose_name_plural = "concert categories"
+        verbose_name = "Concert category"
+        verbose_name_plural = "音樂會類別"
         ordering = ["-name"]
 
     def __str__(self):
@@ -35,8 +38,11 @@ class Concert(models.Model):
 
     class Meta:
         ordering = ["starts_at"]
+        verbose_name_plural = "音樂會"
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
         if self.id is None:
             self.tickets_left = self.venue.capacity
 
@@ -63,6 +69,9 @@ class Ticket(models.Model):
     )
     paid_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "門票"
 
     def __str__(self):
         return f"{self.customer_full_name} ({self.concert})"
